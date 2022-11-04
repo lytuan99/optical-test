@@ -1,4 +1,3 @@
-const SCREEN_TOTAL = 16;
 
 const screen1 = [
   {
@@ -37,6 +36,7 @@ const screen2 = [
 ];
 
 const screens = [screen1, screen2];
+const SCREEN_TOTAL = screens.length;
 
 const characters =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -44,9 +44,18 @@ const characters =
 const DEFAULT_LENGTH = 5;
 
 const PAGE_INPUT = "page-input";
-const TEXT_0 = "text-0";
-const TEXT_1 = "text-1";
-const TEXT_2 = "text-2";
+let currentPage = 1;
+
+const insertSpaceToText = (text) => {
+  if (!text) return;
+
+  let result = '';
+  text.split('').forEach(c => {
+    result = result + ' ' + c;
+  });
+
+  return result;
+}
 
 const randomText = (length = DEFAULT_LENGTH) => {
   const charactersLength = characters.length;
@@ -54,7 +63,7 @@ const randomText = (length = DEFAULT_LENGTH) => {
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
-  return result;
+  return insertSpaceToText(result);
 };
 
 const renderText = (page) => {
@@ -62,37 +71,41 @@ const renderText = (page) => {
   const actualPage = page - 1;
   const currScreen = screens[actualPage];
 
-  const text0 = document.getElementById(TEXT_0);
-  const text1 = document.getElementById(TEXT_1);
-  const text2 = document.getElementById(TEXT_2);
-
-  const contentListID = document.getElementById("abc");
+  const contentListID = document.getElementById("content-wrapper");
 
   let contentList = "";
     currScreen.forEach((item) => {
+      const text = randomText();
       contentList += `
         <div class="line">
-          <span>1.0</span>
-          <p id="text-0" class="text">s o h n v</p>
-          <span>6/60</span>
+          <span>${item.left}</span>
+          <p class="text" style="font-size: ${item.fontSize}">${text}</p>
+          <span>${item.right}</span>
         </div>
       `;
-      // pass fontSize and text to screen
     });
-
-    console.log(contentListID)
 
   contentListID.innerHTML = contentList;
 };
 
-renderText(1);
+renderText(currentPage);
+
+const inputDom = document.getElementById(PAGE_INPUT);
 
 const handleClickPrevBtn = () => {
-  console.log("hi prev btn");
+  if (currentPage - 1 < 1) currentPage = SCREEN_TOTAL;
+  else currentPage--;
+
+  inputDom.value = currentPage;
+  renderText(currentPage);
 };
 
 const handleClickNextBtn = () => {
-  console.log("hi next btn");
+  if (currentPage + 1 > SCREEN_TOTAL) currentPage = 1;
+  else currentPage++;
+
+  inputDom.value = currentPage;
+  renderText(currentPage);
 };
 
 document
