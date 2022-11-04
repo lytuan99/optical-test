@@ -1,6 +1,12 @@
+@font-face {
+  font-family: 'Sans Regular';
+  src: url(Optician-Sans.otf);
+  font-weight: 400;
+}
+
 * {
   font-size: 100%;
-  font-family: Arial;
+  font-family: 'Sans Regular', sans-serif;
 }
 
 p {
