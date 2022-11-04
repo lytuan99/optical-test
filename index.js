@@ -1,4 +1,3 @@
-
 const screen1 = [
   {
     left: "1.0",
@@ -49,13 +48,13 @@ let currentPage = 1;
 const insertSpaceToText = (text) => {
   if (!text) return;
 
-  let result = '';
-  text.split('').forEach(c => {
-    result = result + ' ' + c;
+  let result = "";
+  text.split("").forEach((c) => {
+    result = result + " " + c;
   });
 
   return result;
-}
+};
 
 const randomText = (length = DEFAULT_LENGTH) => {
   const charactersLength = characters.length;
@@ -74,16 +73,16 @@ const renderText = (page) => {
   const contentListID = document.getElementById("content-wrapper");
 
   let contentList = "";
-    currScreen.forEach((item) => {
-      const text = randomText();
-      contentList += `
+  currScreen.forEach((item) => {
+    const text = randomText();
+    contentList += `
         <div class="line">
           <span>${item.left}</span>
           <p class="text" style="font-size: ${item.fontSize}">${text}</p>
           <span>${item.right}</span>
         </div>
       `;
-    });
+  });
 
   contentListID.innerHTML = contentList;
 };
@@ -108,6 +107,10 @@ const handleClickNextBtn = () => {
   renderText(currentPage);
 };
 
+const handleClickRefreshBtn = () => {
+  renderText(currentPage);
+};
+
 document
   .getElementById("prev-btn")
   .addEventListener("click", handleClickPrevBtn);
@@ -115,3 +118,7 @@ document
 document
   .getElementById("next-btn")
   .addEventListener("click", handleClickNextBtn);
+
+document
+  .getElementById("refresh-btn")
+  .addEventListener("click", handleClickRefreshBtn);
