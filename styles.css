@@ -35,8 +35,17 @@ span {
   align-items: center;
 }
 
+.line span {
+  width: 40px;
+}
+
+.control-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .control-wrapper {
-  width: 120px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -55,6 +64,10 @@ span {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+#prev-btn, #next-btn {
+  width: 40px;
+}
+
 .btn:hover {
   background: #a34c0fcf;
 }
@@ -63,6 +76,10 @@ input[type=number] {
   border-radius: 5px;
   border: 1px solid gray;
   padding: 8px 10px;
-  width: 30px;
+  width: 50px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.control-wrapper .label {
   font-family: Arial, Helvetica, sans-serif;
 }

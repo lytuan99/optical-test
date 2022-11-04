@@ -1,6 +1,6 @@
 const K = 0.1;
 
-const screen1 = [
+const opticians = [
   {
     left: "1.0",
     right: "6/60",
@@ -16,16 +16,13 @@ const screen1 = [
     right: "6/38",
     // fontSize: "88.5px",
   },
-];
-
-const screen2 = [
   {
     left: "0.7",
     right: "6/30",
     // fontSize: "70px",
   },
   {
-    left: "0.8",
+    left: "0.6",
     right: "6/24",
     // fontSize: "56px",
   },
@@ -34,9 +31,6 @@ const screen2 = [
     right: "6/19",
     // fontSize: "44px",
   },
-];
-
-const screen3 = [
   {
     left: "0.4",
     right: "6/15",
@@ -49,9 +43,6 @@ const screen3 = [
     left: "0.2",
     right: "6/9.5",
   },
-];
-
-const screen4 = [
   {
     left: "0.1",
     right: "6/7.5",
@@ -69,20 +60,40 @@ const screen4 = [
 const characters =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-let screens = [screen1, screen2, screen3, screen4];
-const SCREEN_TOTAL = screens.length;
-const DEFAULT_LENGTH = 5;
+let screens = [];
+
+const DEFAULT_TEXT_LENGTH = 5;
 const DEFAULT_MAX_FONT_SIZE = 140;
 const PAGE_INPUT = "page-input";
+const FONT_SIZE_MAX_INPUT = "font-size-max-input";
+const FONT_SIZE_STANDARD_KEY = "FONT_SIZE_STANDARD_KEY";
 
 let currentPage = 1;
 
 const getScreens = (maxSize) => {
+  let tempScreens = [];
+
+  let tempScreen = [];
+  opticians.forEach((op, index) => {
+    if (index !== 0 && index % 3 === 0) {
+      tempScreens.push(tempScreen);
+      tempScreen = [op];
+      return;
+    }
+    tempScreen.push(op);
+  });
+  tempScreens.push(tempScreen);
+
+  // set pages
+  tempScreens = [...tempScreens, ...opticians.map((op) => [op])];
+
   const result = [];
-  screens.forEach((screen) => {
+
+  tempScreens.forEach((screen) => {
     const s = screen.map((s) => {
       const [numerator, denominator] = s.right.split("/");
-      const fontSize = (maxSize * Number(denominator) / Number(numerator)) * K;
+      const fontSize =
+        ((maxSize * Number(denominator)) / Number(numerator)) * K;
       return {
         ...s,
         fontSize: `${fontSize}px`,
@@ -90,11 +101,9 @@ const getScreens = (maxSize) => {
     });
     result.push(s);
   });
-  console.log(result)
+
   return result;
 };
-
-screens = getScreens(DEFAULT_MAX_FONT_SIZE);
 
 const insertSpaceToText = (text) => {
   if (!text) return;
@@ -107,7 +116,7 @@ const insertSpaceToText = (text) => {
   return result;
 };
 
-const randomText = (length = DEFAULT_LENGTH) => {
+const randomText = (length = DEFAULT_TEXT_LENGTH) => {
   const charactersLength = characters.length;
   let result = "";
   for (let i = 0; i < length; i++) {
@@ -117,7 +126,7 @@ const randomText = (length = DEFAULT_LENGTH) => {
 };
 
 const renderText = (page) => {
-  if (page < 1 || page > SCREEN_TOTAL) return;
+  if (page < 1 || page > screens.length) return;
   const actualPage = page - 1;
   const currScreen = screens[actualPage];
 
@@ -138,12 +147,23 @@ const renderText = (page) => {
   contentListID.innerHTML = contentList;
 };
 
-renderText(currentPage);
-
 const inputDom = document.getElementById(PAGE_INPUT);
 
+function main() {
+  let standardFontSize = localStorage.getItem(FONT_SIZE_STANDARD_KEY);
+  if (!standardFontSize) standardFontSize = DEFAULT_MAX_FONT_SIZE;
+  standardFontSize = Number(standardFontSize);
+
+  document.getElementById(FONT_SIZE_MAX_INPUT).value = standardFontSize;
+
+  screens = getScreens(standardFontSize);
+  renderText(currentPage);
+}
+
+main();
+
 const handleClickPrevBtn = () => {
-  if (currentPage - 1 < 1) currentPage = SCREEN_TOTAL;
+  if (currentPage - 1 < 1) currentPage = screens.length;
   else currentPage--;
 
   inputDom.value = currentPage;
@@ -151,7 +171,7 @@ const handleClickPrevBtn = () => {
 };
 
 const handleClickNextBtn = () => {
-  if (currentPage + 1 > SCREEN_TOTAL) currentPage = 1;
+  if (currentPage + 1 > screens.length) currentPage = 1;
   else currentPage++;
 
   inputDom.value = currentPage;
@@ -159,6 +179,15 @@ const handleClickNextBtn = () => {
 };
 
 const handleClickRefreshBtn = () => {
+  renderText(currentPage);
+};
+
+const handleSaveNewStandardFontSize = () => {
+  const fontSize = document.getElementById(FONT_SIZE_MAX_INPUT).value;
+  console.log({fontSize});
+  localStorage.setItem(FONT_SIZE_STANDARD_KEY, fontSize);
+
+  screens = getScreens(Number(fontSize));
   renderText(currentPage);
 };
 
@@ -173,3 +202,7 @@ document
 document
   .getElementById("refresh-btn")
   .addEventListener("click", handleClickRefreshBtn);
+
+document
+  .getElementById("save-btn")
+  .addEventListener("click", handleSaveNewStandardFontSize);
