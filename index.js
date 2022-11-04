@@ -57,7 +57,7 @@ const opticians = [
   },
 ];
 
-const characters =
+let characters =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 let screens = [];
@@ -66,7 +66,10 @@ const DEFAULT_TEXT_LENGTH = 5;
 const DEFAULT_MAX_FONT_SIZE = 140;
 const PAGE_INPUT = "page-input";
 const FONT_SIZE_MAX_INPUT = "font-size-max-input";
+const CHARACTERS_INPUT = "characters-input";
+
 const FONT_SIZE_STANDARD_KEY = "FONT_SIZE_STANDARD_KEY";
+const CHARACTERS_KEY = "CHARACTERS_KEY";
 
 let currentPage = 1;
 
@@ -153,14 +156,25 @@ function main() {
   let standardFontSize = localStorage.getItem(FONT_SIZE_STANDARD_KEY);
   if (!standardFontSize) standardFontSize = DEFAULT_MAX_FONT_SIZE;
   standardFontSize = Number(standardFontSize);
-
   document.getElementById(FONT_SIZE_MAX_INPUT).value = standardFontSize;
+
+  let localCharacters = localStorage.getItem(CHARACTERS_KEY);
+  if (localCharacters) characters = localCharacters;
+  document.getElementById(CHARACTERS_INPUT).value = characters;
 
   screens = getScreens(standardFontSize);
   renderText(currentPage);
 }
 
+/**
+ * ******* M A I N **********
+ */
+
 main();
+
+/**
+ * ******* M A I N **********
+ */
 
 const handleClickPrevBtn = () => {
   if (currentPage - 1 < 1) currentPage = screens.length;
@@ -184,12 +198,19 @@ const handleClickRefreshBtn = () => {
 
 const handleSaveNewStandardFontSize = () => {
   const fontSize = document.getElementById(FONT_SIZE_MAX_INPUT).value;
-  console.log({fontSize});
   localStorage.setItem(FONT_SIZE_STANDARD_KEY, fontSize);
 
   screens = getScreens(Number(fontSize));
   renderText(currentPage);
 };
+
+const handleSaveNewCharacters = () => {
+  const newCharacters = document.getElementById(CHARACTERS_INPUT).value;
+  localStorage.setItem(CHARACTERS_KEY, newCharacters);
+  characters = newCharacters;
+
+  renderText(currentPage);
+}
 
 document
   .getElementById("prev-btn")
@@ -204,5 +225,9 @@ document
   .addEventListener("click", handleClickRefreshBtn);
 
 document
-  .getElementById("save-btn")
+  .getElementById("save-standard-btn")
   .addEventListener("click", handleSaveNewStandardFontSize);
+
+document
+  .getElementById("save-characters-btn")
+  .addEventListener("click", handleSaveNewCharacters);
