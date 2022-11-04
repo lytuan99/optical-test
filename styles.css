@@ -52,6 +52,7 @@ span {
   cursor: pointer;
   color: white;
   background: #d2691ecf;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .btn:hover {
@@ -63,4 +64,5 @@ input[type=number] {
   border: 1px solid gray;
   padding: 8px 10px;
   width: 30px;
+  font-family: Arial, Helvetica, sans-serif;
 }
