@@ -121,10 +121,16 @@ const insertSpaceToText = (text) => {
 
 const randomText = (length = DEFAULT_TEXT_LENGTH) => {
   const charactersLength = characters.length;
+  let tempCharacters = characters;
   let result = "";
   for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    const randomIndex = Math.floor(Math.random() * tempCharacters.length);
+    const character = tempCharacters.charAt(randomIndex);
+    result += character;
+
+    tempCharacters = tempCharacters.replaceAll(character, "");
   }
+  console.log({characters});
   return insertSpaceToText(result);
 };
 
@@ -210,7 +216,7 @@ const handleSaveNewCharacters = () => {
   characters = newCharacters;
 
   renderText(currentPage);
-}
+};
 
 document
   .getElementById("prev-btn")
@@ -231,3 +237,20 @@ document
 document
   .getElementById("save-characters-btn")
   .addEventListener("click", handleSaveNewCharacters);
+
+document.onkeydown = function (event) {
+  switch (event.keyCode) {
+    case 37:
+      handleClickPrevBtn();
+      break;
+    case 38:
+      handleClickNextBtn();
+      break;
+    case 39:
+      handleClickNextBtn();
+      break;
+    case 40:
+      handleClickPrevBtn();
+      break;
+  }
+};
