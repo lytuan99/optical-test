@@ -130,7 +130,7 @@ const randomText = (length = DEFAULT_TEXT_LENGTH) => {
 
     tempCharacters = tempCharacters.replaceAll(character, "");
   }
-  console.log({characters});
+
   return insertSpaceToText(result);
 };
 
@@ -237,17 +237,15 @@ document
 document
   .getElementById("save-characters-btn")
   .addEventListener("click", handleSaveNewCharacters);
-document.onclick = function (event) {
-  console.log("click: ", event);
-};
 
 document.onkeydown = function (event) {
-  console.log("hihi: ", event);
   switch (event.keyCode) {
     case 33: // PageUp
       handleClickPrevBtn();
+      break;
     case 34: // PageDown
       handleClickNextBtn();
+      break;
     case 37:
       handleClickPrevBtn();
       break;
