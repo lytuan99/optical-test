@@ -237,9 +237,17 @@ document
 document
   .getElementById("save-characters-btn")
   .addEventListener("click", handleSaveNewCharacters);
+document.onclick = function (event) {
+  console.log("click: ", event);
+};
 
 document.onkeydown = function (event) {
+  console.log("hihi: ", event);
   switch (event.keyCode) {
+    case 33: // PageUp
+      handleClickPrevBtn();
+    case 34: // PageDown
+      handleClickNextBtn();
     case 37:
       handleClickPrevBtn();
       break;
@@ -251,6 +259,8 @@ document.onkeydown = function (event) {
       break;
     case 40:
       handleClickPrevBtn();
+    case 66: // KeyB
+      handleClickRefreshBtn();
       break;
   }
 };
