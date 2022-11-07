@@ -88,11 +88,19 @@ const getScreens = (maxSize) => {
   tempScreens.push(tempScreen);
 
   // set pages
-  tempScreens = [...tempScreens, ...opticians.map((op) => [op])];
+  tempScreens = [
+    ...tempScreens,
+    [{image: "/dots.png"}],
+    ...opticians.map((op) => [op]),
+  ];
 
   const result = [];
 
   tempScreens.forEach((screen) => {
+    if (screen[0].image) {
+      result.push(screen);
+      return;
+    }
     const s = screen.map((s) => {
       const [numerator, denominator] = s.right.split("/");
       const fontSize =
@@ -141,6 +149,14 @@ const renderText = (page) => {
 
   const contentListID = document.getElementById("content-wrapper");
 
+  if (currScreen[0].image) {
+    contentListID.innerHTML = `
+      <div class="img-wrapper">
+        <img src="${currScreen[0].image}"></img>
+      </div>
+    `
+    return;
+  }
   let contentList = "";
   currScreen.forEach((item) => {
     const text = randomText();

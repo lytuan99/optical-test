@@ -25,6 +25,15 @@ span {
   justify-content: center;
 }
 
+.header {
+  position: relative;
+}
+
+.header img {
+  position: absolute;
+  width: 150px;
+}
+
 .root .content-wrapper {
   padding: 0 7%;
 }
@@ -37,6 +46,16 @@ span {
 
 .line span {
   width: 40px;
+}
+
+.img-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.img-wrapper img {
+  width: 100%;
 }
 
 .control-section {
