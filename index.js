@@ -71,6 +71,8 @@ const CHARACTERS_INPUT = "characters-input";
 const FONT_SIZE_STANDARD_KEY = "FONT_SIZE_STANDARD_KEY";
 const CHARACTERS_KEY = "CHARACTERS_KEY";
 
+const DOTS_IMAGE_URL = "https://lytuan99.github.io/optical-test/dots.png";
+
 let currentPage = 1;
 
 const getScreens = (maxSize) => {
@@ -90,7 +92,7 @@ const getScreens = (maxSize) => {
   // set pages
   tempScreens = [
     ...tempScreens,
-    [{image: "/dots.png"}],
+    [{image: DOTS_IMAGE_URL}],
     ...opticians.map((op) => [op]),
   ];
 
@@ -154,7 +156,7 @@ const renderText = (page) => {
       <div class="img-wrapper">
         <img src="${currScreen[0].image}"></img>
       </div>
-    `
+    `;
     return;
   }
   let contentList = "";
